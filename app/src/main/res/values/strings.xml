@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LYRA</string>
+    <string name="accessibility_service_description">LYRA Personal AI Assistant uses Accessibility to inspect visible elements, click, and scroll on your behalf when executing voice commands.</string>
+</resources>

@@ -1,0 +1,6 @@
+{
+  "name": "LYRA",
+  "description": "Futuristic Personal AI Assistant with Screen Vision, Voice Conversation, Smart Device Control & Memory System.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
