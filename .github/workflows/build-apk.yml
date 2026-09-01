@@ -29,13 +29,19 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Ensure Gradle wrapper script exists
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
+      - name: Prepare build environment
         run: |
-          if [ ! -f "gradlew" ]; then
-            echo "gradlew script not found in root. Generating wrapper..."
-            gradle wrapper
+          if [ -f "debug.keystore.base64" ] && [ ! -f "debug.keystore" ]; then
+            echo "Restoring debug.keystore from base64..."
+            base64 -d debug.keystore.base64 > debug.keystore
           fi
-          chmod +x gradlew
+          if [ ! -f ".env" ] && [ -f ".env.example" ]; then
+            echo "Creating .env placeholder from .env.example..."
+            cp .env.example .env
+          fi
 
       - name: Build Debug APK
         run: ./gradlew :app:assembleDebug --stacktrace
