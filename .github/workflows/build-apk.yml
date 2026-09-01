@@ -34,13 +34,23 @@ jobs:
 
       - name: Prepare build environment
         run: |
-          if [ -f "debug.keystore.base64" ] && [ ! -f "debug.keystore" ]; then
-            echo "Restoring debug.keystore from base64..."
-            base64 -d debug.keystore.base64 > debug.keystore
+          if [ ! -f "debug.keystore" ]; then
+            if [ -f "debug.keystore.base64" ]; then
+              echo "Restoring debug.keystore from debug.keystore.base64..."
+              base64 -d debug.keystore.base64 > debug.keystore
+            else
+              echo "Generating new debug.keystore..."
+              keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+            fi
           fi
-          if [ ! -f ".env" ] && [ -f ".env.example" ]; then
-            echo "Creating .env placeholder from .env.example..."
-            cp .env.example .env
+          if [ ! -f ".env" ]; then
+            if [ -f ".env.example" ]; then
+              echo "Creating .env placeholder from .env.example..."
+              cp .env.example .env
+            else
+              echo "Creating empty .env..."
+              touch .env
+            fi
           fi
 
       - name: Build Debug APK
